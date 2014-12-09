@@ -57,11 +57,12 @@ define('models/user', {
                 if ($this.userId != "GUEST") {
                     console.log("Get orders");
                     $.ajax({
-                        url: '/api/order/get'
+                        url: '/api/orderhistory/get'
                     }).done(function (data) {
                         //console.log(data);
                         var orderIds = JSON.parse(data).orders;
                         console.log(data);
+                        $this.orderHistory = [];
                         if (orderIds !== undefined && orderIds.length > 0) {
                             for(var i=0; i<orderIds.length; i++){
                                 $this.orderHistory.push(orderIds[i]);
