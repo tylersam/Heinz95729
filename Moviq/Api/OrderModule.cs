@@ -30,8 +30,10 @@ using Moviq.Domain.Cart;
                         ICustomClaimsIdentity currentUser = AmbientContext.CurrentClaimsPrinciple.ClaimsIdentity;
                         string guid = currentUser.GetAttribute(AmbientContext.UserPrincipalGuidAttributeKey).ToString();
 
+
                         IOrder order;                        
                         order = orderDomain.Repo.Get(guid);
+                        
                         return helper.ToJson(order);
                     }
                     return helper.ToJson("user not logged in");
