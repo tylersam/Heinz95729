@@ -61,6 +61,7 @@
     <Compile Include="OrderHistoryDomain.cs" />
     <Compile Include="OrderHistoryFactory.cs" />
     <Compile Include="OrderHistoryNoSqlRepository.cs" />
+    <Compile Include="OrderList.cs" />
     <Compile Include="OrderNoSqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShippingDetails.cs" />

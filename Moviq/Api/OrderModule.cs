@@ -30,9 +30,50 @@ using Moviq.Domain.Cart;
                         ICustomClaimsIdentity currentUser = AmbientContext.CurrentClaimsPrinciple.ClaimsIdentity;
                         string guid = currentUser.GetAttribute(AmbientContext.UserPrincipalGuidAttributeKey).ToString();
 
-                        IOrderHistory order;
-                        order = orderHistoryDomain.Repo.Get(guid);
+
+                        IOrder order;                        
+                        order = orderDomain.Repo.Get(guid);
+                        
                         return helper.ToJson(order);
+                    }
+                    return helper.ToJson("user not logged in");
+                };
+
+                this.Get["/api/orderhistory/get", true] = async (args, cancellationToken) =>
+                {
+                    //identify user and get the order
+                    var amount = this.Request.Query.a;
+                    var quant = this.Request.Query.q;
+                    var currUser = this.Context.CurrentUser;
+                    if (currUser != null)
+                    {
+                        ICustomClaimsIdentity currentUser = AmbientContext.CurrentClaimsPrinciple.ClaimsIdentity;
+                        string guid = currentUser.GetAttribute(AmbientContext.UserPrincipalGuidAttributeKey).ToString();
+
+                        IOrderHistory orderHistory;
+                        orderHistory = orderHistoryDomain.Repo.Get(guid);
+
+                        return helper.ToJson(orderHistory);
+                    }
+                    return helper.ToJson("user not logged in");
+                };
+
+                this.Get["/api/orderhistorydetails/get", true] = async (args, cancellationToken) =>
+                {
+                    //identify user and get the order
+                    var amount = this.Request.Query.a;
+                    var quant = this.Request.Query.q;
+                    var currUser = this.Context.CurrentUser;
+                    if (currUser != null)
+                    {
+                        ICustomClaimsIdentity currentUser = AmbientContext.CurrentClaimsPrinciple.ClaimsIdentity;
+                        string guid = currentUser.GetAttribute(AmbientContext.UserPrincipalGuidAttributeKey).ToString();
+
+                        IOrderHistory orderHistory;
+                        orderHistory = orderHistoryDomain.Repo.Get(guid);
+
+                        OrderList ordList = getOrderHistoryList(orderHistory, orderDomain, guid);
+                        return helper.ToJson(ordList);
                     }
                     return helper.ToJson("user not logged in");
                 };
@@ -108,6 +149,23 @@ using Moviq.Domain.Cart;
                 }
 
                 return cartProds;
+            }
+
+            public OrderList getOrderHistoryList(IOrderHistory oh, IOrderDomain orderDomain, string guid)
+            {
+                OrderList ordList = new OrderList(new Guid(guid));
+
+                if (oh.orders.Count != 0)
+                {
+                    List<string> keys = oh.orders.ToList<string>();                    
+
+                    foreach (string oid in keys)
+                    {
+                        ordList.addOrder(orderDomain.Repo.Get(oid));
+                    }                    
+                }
+
+                return ordList;
             }
         }
     }
