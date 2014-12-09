@@ -187,7 +187,7 @@
     <Content Include="Views\Templates\checkout.html" />
     <Content Include="Views\Templates\error-404.html" />
     <Content Include="Views\Templates\login.html" />
-    <Content Include="Views\Templates\order-history.html" />
+    <Content Include="Views\Templates\orders.html" />
     <Content Include="Views\Templates\register.html" />
     <Content Include="Views\Templates\search-no-results.html" />
     <Content Include="Views\Templates\empty.html" />
